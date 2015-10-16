@@ -11,5 +11,5 @@ public class CommitPCMTest {
 	public void test1() {
 		// simple verification
 		assertTrue(true); // everything OK
-	}
+	}//fin
 }
