@@ -24,7 +24,7 @@ public class MyPCMPrinterTest {
         PCM pcm = loader.load(pcmFile).get(0).getPcm();
         assertNotNull(pcm);
 
-        // Execute the printer
+        // Execute the printer (will be html!)
         MyPCMPrinter myPrinter = new MyPCMPrinter(); // we will replace by an HTML exporter
         myPrinter.print(pcm); // HTML needed!
 
