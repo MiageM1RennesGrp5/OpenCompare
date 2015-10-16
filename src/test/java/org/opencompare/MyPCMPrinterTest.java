@@ -25,7 +25,7 @@ public class MyPCMPrinterTest {
         assertNotNull(pcm);
 
         // Execute the printer
-        MyPCMPrinter myPrinter = new MyPCMPrinter(); // we will replace by HTML exporter
+        MyPCMPrinter myPrinter = new MyPCMPrinter(); // we will replace by an HTML exporter
         myPrinter.print(pcm);
 
 
