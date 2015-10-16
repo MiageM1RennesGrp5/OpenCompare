@@ -10,6 +10,6 @@ public class CommitPCMTest {
 	@Test
 	public void test1() {
 		// simple verification
-		assertTrue(true);
+		assertTrue(true); // everything OK
 	}
 }
