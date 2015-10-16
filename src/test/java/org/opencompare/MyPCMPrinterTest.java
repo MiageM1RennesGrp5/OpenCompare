@@ -26,7 +26,7 @@ public class MyPCMPrinterTest {
 
         // Execute the printer
         MyPCMPrinter myPrinter = new MyPCMPrinter(); // we will replace by HTML exporter
-        myPrinter.print(pcm);
+        myPrinter.print(pcm); // HTML needed!
 
 
     }
