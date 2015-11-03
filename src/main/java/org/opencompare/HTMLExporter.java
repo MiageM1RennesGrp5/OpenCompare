@@ -19,12 +19,12 @@ import java.util.*;
  */
 public class HTMLExporter implements PCMVisitor, PCMExporter {
 
-	private boolean renverser = false; //savoir s'il faut renverser ou pas
+	private boolean renverser = true; //savoir s'il faut renverser ou pas
 	
 	private Document doc;
     private Element body;
     private PCMMetadata metadata;
-    private Element tr; // Current column
+    private Element tr; //Current column
     Document.OutputSettings settings = new Document.OutputSettings();
     private String templateFull = "<html>\n" +
             "\t<head>\n" +

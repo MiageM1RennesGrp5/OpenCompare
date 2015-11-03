@@ -23,7 +23,6 @@ public class Main {
 	
 	        
 	      HTMLExporter htmlExporter = new HTMLExporter();
-	     // System.out.println( htmlExporter.toHTML(pcm));
 	      htmlExporter.creerFichier("fichierHTML.html", htmlExporter.toHTML(pcm));
 	       
 	        
