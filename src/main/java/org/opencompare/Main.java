@@ -14,7 +14,7 @@ import org.opencompare.api.java.io.PCMLoader;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method  stub
 		 File pcmFile = new File("pcms/example.pcm");
 	        PCMLoader loader = new KMFJSONLoader();
 	        PCM pcm = loader.load(pcmFile).get(0).getPcm();

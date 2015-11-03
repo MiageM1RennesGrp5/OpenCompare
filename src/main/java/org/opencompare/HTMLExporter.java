@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class HTMLExporter implements PCMVisitor, PCMExporter {
 
-	private boolean renverser = true; //savoir  s'il faut renverser ou pas
+	private boolean renverser = false; //savoir s'il faut renverser ou pas
 	
 	private Document doc;
     private Element body;
