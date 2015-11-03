@@ -10,6 +10,7 @@ import org.opencompare.api.java.value.*;
 public class MyPCMPrinter implements PCMVisitor {
 
     private boolean isBooleanCell;
+    //hjfgjhgj
 
     /**
      * Print some information contained in a PCM
