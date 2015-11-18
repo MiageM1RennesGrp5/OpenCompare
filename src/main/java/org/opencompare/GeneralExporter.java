@@ -22,6 +22,7 @@ public class GeneralExporter {
 	FileReader fr;
 	
 	public GeneralExporter(PCM filePcm, File fileConf) throws IOException {
+		
 		// TODO Auto-generated constructor stub
 		this.filePcm = filePcm;
 		this.fileConf = fileConf;

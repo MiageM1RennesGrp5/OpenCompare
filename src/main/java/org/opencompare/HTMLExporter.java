@@ -139,6 +139,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
             th.attr("colspan", Integer.toString(featureGroup.getFeatures().size()));
         }
         th.text(featureGroup.getName());
+        
         System.out.println("::::::::::::::::::::::::::::"+featureGroup.getName());
         nextFeaturesToVisit.addAll(featureGroup.getFeatures());
     }
