@@ -1,7 +1,0 @@
-renverser = false
-
-cssPersonalise = true
-***Si "cssPersonalise" est egale a false les lignes suivantes ne seront pas prices en compte***
-coleurTxtCaracteristiques = red
-
-coleurTxtProduits = pink

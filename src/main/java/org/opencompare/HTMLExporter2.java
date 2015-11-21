@@ -17,10 +17,12 @@ import java.util.*;
 /**
  * Created by gbecan on 13/10/14.
  */
-public class HTMLExporter implements PCMVisitor, PCMExporter {
+public class HTMLExporter2 implements PCMVisitor, PCMExporter {
 
+	private Boolean renverser = false;
 	private Document doc;
     private Element body;
+    private Element head;
     private PCMMetadata metadata;
     private Element tr; //Current column
     Document.OutputSettings settings = new Document.OutputSettings();
@@ -32,7 +34,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
             "\t\t<link href=\"css/bootstrap.min.css\" rel=\"stylesheet\">\n"+
             "\t\t<script src=\"js/jquery.min.js\"></script>\n"+
             "\t\t<script src=\"js/bootstrap.min.js\"></script>\n"+    
-           
+                 
             "\t</head>\n" +
             "\t<body>\n" +
           
@@ -69,7 +71,12 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 
     @Override
     public void visit(PCM pcm) {
+    	
        // body.appendElement("h1").text(pcm.getName());
+       if (renverser) {
+		Element script = body.appendElement("script");
+		script.attr("src","js/renverser.js");
+       }
         Element title = body.appendElement("h1");
         title.attr("id", "title").text(pcm.getName());
         Element section = body.appendElement("section");
@@ -91,7 +98,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
         featuresToVisit.addAll(pcm.getFeatures());
 
         tr = table.appendElement("tr");
-        tr.appendElement("th").attr("rowspan", Integer.toString(featureDepth)).text("Product");
+        tr.appendElement("td").attr("rowspan", Integer.toString(featureDepth)).text("Product");
        
      
         	
@@ -131,13 +138,13 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
     public void visit(Feature feature) {
     	
     		/*code original*/
-    		Element th = tr.appendElement("th");
+    		Element td = tr.appendElement("td");
     		if (featureDepth > 1) {
-    			th.attr("rowspan", Integer.toString(featureDepth));
+    			td.attr("rowspan", Integer.toString(featureDepth));
     			
     		}    		
-    		th.text(feature.getName());
-    		th.attr("class", "en-tete-caracteristiques");
+    		td.text(feature.getName());
+    		td.attr("class", "en-tete-caracteristiques");
     		
     	
     }
@@ -173,13 +180,13 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
     public void visit(Product product) {
     	
   			/*code original*/
-			 Element th = tr.appendElement("th");
+			 Element td = tr.appendElement("td");
 		        if (featureDepth > 1) {
-		        	th.attr("rowspan", Integer.toString(featureDepth));
+		        	td.attr("rowspan", Integer.toString(featureDepth));
 		        	
 		        }
-		        th.text(product.getName());
-		        th.attr("class","en-tete-produits");
+		        td.text(product.getName());
+		        td.attr("class","en-tete-produits");
 		        List<Cell> cells = product.getCells();
 
 		        Collections.sort(cells, new Comparator<Cell>() {
@@ -191,8 +198,8 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 		        });
 
 		        for (Cell cell : cells) {
-		            Element td = tr.appendElement("td");
-		            td.appendElement("span").text(cell.getContent());
+		            Element td1 = tr.appendElement("td");
+		            td1.appendElement("span").text(cell.getContent());
 		        }
 			
 		
@@ -286,4 +293,13 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
     public void visit(Version version) {
 
     }
+
+
+	
+
+	public void setRenverser(Boolean renverser) {
+		this.renverser = renverser;
+	}
+    
+    
 }

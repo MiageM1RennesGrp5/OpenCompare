@@ -17,10 +17,10 @@ public class GeneralExporter {
 	File fileConf;
 	HTMLExporter htmlExporter;
 	HTMLExporterRenverse htmlRenverse;
+	HTMLExporter2 htmlExporter2;
 	CSSExporter cssExporter;
 	Properties properties;
 	FileReader fr;
-	
 	public GeneralExporter(PCM filePcm, File fileConf) throws IOException {
 		
 		// TODO Auto-generated constructor stub
@@ -35,17 +35,20 @@ public class GeneralExporter {
 		}
 		
 		if (Boolean.parseBoolean(properties.getProperty("renverser"))) {
-			this.exporterHtmlRenverser("htmlRenverse.html");
+			//this.exporterHtmlRenverser("htmlRenverse.html");
+			
+			this.exporterHTMLRenverseJquery("htmlRenverseJquery.html",true);
 		}else{
 			
-			this.exporterHtml("fichierHTML.html");
+			//this.exporterHtml("fichierHTML.html");
+			this.exporterHTMLRenverseJquery("htmlJquery.html",false);
+			
 		}
-		
+		this.exporterCss("stylePerso.css");
 	}
 	
 	public void exporterHtml(String nomFichier){
 		this.htmlExporter = new HTMLExporter();
-		//htmlExporter.setRenverser(Boolean.parseBoolean(properties.getProperty("renverser")));
 		htmlExporter.creerFichier(nomFichier, htmlExporter.toHTML(filePcm));
 	}
 	
@@ -53,8 +56,19 @@ public class GeneralExporter {
 		this.htmlRenverse = new HTMLExporterRenverse();
 		htmlRenverse.creerFichier(nomFichier, htmlRenverse.toHTML(filePcm));
 	}
-	public void exporterCss(String nomFichier){
-		this.cssExporter = new CSSExporter();
+	public void exporterCss(String nomFichier) throws IOException{
+		this.cssExporter = new CSSExporter(fileConf);
+		cssExporter.test();
+		cssExporter.creerFichier(nomFichier);
 	}
 	
+	
+	/**
+	 * 
+	 */
+	public void exporterHTMLRenverseJquery(String nomFichier, Boolean renverser){
+		this.htmlExporter2 = new HTMLExporter2();
+		htmlExporter2.setRenverser(renverser);
+		htmlExporter2.creerFichier(nomFichier, htmlExporter2.toHTML(filePcm));
+	}
 }

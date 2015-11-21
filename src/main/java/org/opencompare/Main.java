@@ -16,7 +16,7 @@ public class Main {
 	     PCMLoader loader = new KMFJSONLoader();
 	     PCM pcm = loader.load(pcmFile).get(0).getPcm();
 	        
-	      File configFile = new File("config/configuration.txt");
+	      File configFile = new File("config/configuration.properties");
 	         
 //	      HTMLExporter htmlExporter = new HTMLExporter();
 //	      htmlExporter.creerFichier("fichierHTML.html", htmlExporter.toHTML(pcm));
