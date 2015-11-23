@@ -40,8 +40,8 @@ public class GeneralExporter {
 			this.exporterHTMLRenverseJquery("htmlRenverseJquery.html",true);
 		}else{
 			
-			//this.exporterHtml("fichierHTML.html");
-			this.exporterHTMLRenverseJquery("htmlJquery.html",false);
+			this.exporterHtml("fichierHTML.html");
+			//this.exporterHTMLRenverseJquery("htmlJquery.html",false);
 			
 		}
 		this.exporterCss("stylePerso.css");
@@ -69,6 +69,7 @@ public class GeneralExporter {
 	public void exporterHTMLRenverseJquery(String nomFichier, Boolean renverser){
 		this.htmlExporter2 = new HTMLExporter2();
 		htmlExporter2.setRenverser(renverser);
+		//htmlExporter2.renverser(htmlExporter2.toHTML(filePcm));
 		htmlExporter2.creerFichier(nomFichier, htmlExporter2.toHTML(filePcm));
 	}
 }

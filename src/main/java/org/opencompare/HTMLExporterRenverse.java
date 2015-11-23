@@ -42,7 +42,6 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
     private Element body;
     private PCMMetadata metadata;
     private Element tr; //Current column
-    private Product productTest;
     Document.OutputSettings settings = new Document.OutputSettings();
     private String templateFull = "<html>\n" +
             "\t<head>\n" +
@@ -111,11 +110,9 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
        for (Product product : pcm.getProducts()) {
        	//tr.appendElement("th");
            //tr = table.appendElement("tr");
-    	   productTest = product;
        	//cellProduct(product);
           product.accept(this);
        }
-       
        while(!featuresToVisit.isEmpty()) {
            Collections.sort(featuresToVisit, new Comparator<AbstractFeature>() {
              
@@ -139,45 +136,39 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
    	
 	}
 
+	
 	@Override
-	public void visit(Feature feature) {
-		/*code de base modifie*/
-		
-		tr.appendElement("th").text(feature.getName());
-		List<Cell> cells = feature.getCells();
-		
-		 Collections.sort(cells, new Comparator<Cell>() {
-	            @Override
-	            public int compare(Cell cell1, Cell cell2) {
-	            	
-	                return metadata.getSortedFeatures().indexOf(cell1.getFeature()) - metadata.getSortedFeatures().indexOf(cell2.getFeature());
-	            }
-	        });
-		
-		for (Cell cell : cells) {
-			
-				Element td = tr.appendElement("td");
-				td.appendElement("span").text(cell.getContent());
-			
-				//System.out.println(cell.getContent());
-			
-		}
-		
-	}
+	public void visit(Product product) {
+		tr.appendElement("th").text(product.getName());
 
+    	System.out.println("777777777777777");
+	}
+	
+	
 	@Override
 	 public void visit(FeatureGroup featureGroup) {
-        Element th = tr.appendElement("th");
-        if (!featureGroup.getFeatures().isEmpty()) {
-            th.attr("colspan", Integer.toString(featureGroup.getFeatures().size()));
+       Element th = tr.appendElement("th");
+       if (!featureGroup.getFeatures().isEmpty()) {
+           th.attr("colspan", Integer.toString(featureGroup.getFeatures().size()));
+       }
+       th.text(featureGroup.getName());
+       nextFeaturesToVisit.addAll(featureGroup.getFeatures());
+   }
+
+	@Override
+	public void visit(Feature feature) {
+		
+		
+		/*code de base modifie*/
+		Element th = tr.appendElement("th");
+		//tr.appendElement("th").text(feature.getName());
+		if (featureDepth > 1) {
+        	th.attr("rowspan", Integer.toString(featureDepth));
+        	
         }
-        th.text(featureGroup.getName());
-        System.out.println("::::::::::::::::::::::::::::"+featureGroup.getName());
-        nextFeaturesToVisit.addAll(featureGroup.getFeatures());
-    }
-	
-	public List<Cell> cellProduct(Product product){
-    	List<Cell> cells = product.getCells();
+		th.text(feature.getName());
+		
+		List<Cell> cells = feature.getCells();
 		
 		Collections.sort(cells, new Comparator<Cell>() {
 			@Override
@@ -186,17 +177,22 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 						- metadata.getSortedFeatures().indexOf(cell2.getFeature());
 			}
 		});
+		
+		
 		for (Cell cell : cells) {
-			System.out.println(cell.getContent());
+			
+				Element td = tr.appendElement("td");
+				td.appendElement("span").text(cell.getContent());
 			
 		}
-		return cells;}
-
-	@Override
-	public void visit(Product product) {
-		tr.appendElement("th").text(product.getName());
 		
 	}
+
+	
+	
+	
+
+
 	
 	 /**
      * creation du fichier html

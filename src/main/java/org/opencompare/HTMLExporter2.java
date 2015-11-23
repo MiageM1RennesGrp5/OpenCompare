@@ -3,6 +3,7 @@ package org.opencompare;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.opencompare.api.java.*;
 import org.opencompare.api.java.io.PCMExporter;
 import org.opencompare.api.java.util.PCMVisitor;
@@ -24,6 +25,8 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
     private Element body;
     private Element head;
     private PCMMetadata metadata;
+    int i = 0;
+    int x = 0;
     private Element tr; //Current column
     Document.OutputSettings settings = new Document.OutputSettings();
     private String templateFull = "<html>\n" +
@@ -127,6 +130,8 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
 				product.accept(this);
 			}
         	
+			this.renverser(table);
+			//System.out.println(table.childNodes());
         	
         }
         
@@ -136,7 +141,7 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
 
     @Override
     public void visit(Feature feature) {
-    	
+    
     		/*code original*/
     		Element td = tr.appendElement("td");
     		if (featureDepth > 1) {
@@ -144,8 +149,9 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
     			
     		}    		
     		td.text(feature.getName());
-    		td.attr("class", "en-tete-caracteristiques");
+    		td.attr("class", "en-tete-caracteristiques"+" "+ x);
     		
+    	x++;	
     	
     }
 
@@ -178,7 +184,7 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
 		return cells;}
     @Override
     public void visit(Product product) {
-    	
+    
   			/*code original*/
 			 Element td = tr.appendElement("td");
 		        if (featureDepth > 1) {
@@ -198,11 +204,14 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
 		        });
 
 		        for (Cell cell : cells) {
+		        	
 		            Element td1 = tr.appendElement("td");
 		            td1.appendElement("span").text(cell.getContent());
+		            td1.attr("class",""+i);
+		            i++;
 		        }
 			
-		
+		i = 0;
       
 
     }
@@ -223,6 +232,26 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
 	    	   }
     }
     
+    
+   public void renverser(Element table){
+String[] nouveauContenu = {};
+//	   System.out.println(contenu);
+//	   System.out.println(contenu.contains("<tr"));
+//	   contenu.split("");
+	   String contenu = table.toString();
+	   String[] tableTr = contenu.split("</tr>"); 
+	  for(String tr : tableTr){
+		  String[] tableTd = tr.split("</td>");
+		  for(String td : tableTd){
+			  String[] tableContenuTd = td.split(">");
+			  for(String contenuTd : tableContenuTd){
+				  System.out.println(contenuTd+"***");
+			  }
+		  }
+	  }
+	 
+	   
+   }
   
     @Override
     public void visit(Cell cell) {

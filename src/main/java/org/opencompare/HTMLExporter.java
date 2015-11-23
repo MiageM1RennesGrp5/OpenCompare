@@ -156,19 +156,22 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
         nextFeaturesToVisit.addAll(featureGroup.getFeatures());
     }
 
-    public List<Cell> cellProduct(Product product){
-    
-    	List<Cell> cells = product.getCells();
-		
-		Collections.sort(cells, new Comparator<Cell>() {
-			@Override
-			public int compare(Cell cell1, Cell cell2) {
-				return metadata.getSortedFeatures().indexOf(cell1.getFeature())
-						- metadata.getSortedFeatures().indexOf(cell2.getFeature());
-			}
-		});
-		
-		return cells;}
+    /**
+     * methode pas utilisee
+     */
+//    public List<Cell> cellProduct(Product product){
+//    
+//    	List<Cell> cells = product.getCells();
+//		
+//		Collections.sort(cells, new Comparator<Cell>() {
+//			@Override
+//			public int compare(Cell cell1, Cell cell2) {
+//				return metadata.getSortedFeatures().indexOf(cell1.getFeature())
+//						- metadata.getSortedFeatures().indexOf(cell2.getFeature());
+//			}
+//		});
+//		
+//		return cells;}
     @Override
     public void visit(Product product) {
     	
