@@ -8,14 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+
 
 
 public class CSSExporter {
 
-	private Document doc;
-	Document.OutputSettings settings = new Document.OutputSettings();
+	
 	private File config;
 	private Properties properties;
 	private FileReader fr;
@@ -27,7 +25,7 @@ public class CSSExporter {
 		this.fr = new FileReader(config); 
 	}
 	
-	public String test() throws IOException{
+	public String generateCSS() throws IOException{
 		try{
 			properties.load(fr);
 		}finally{
@@ -54,7 +52,30 @@ public class CSSExporter {
 		if (!properties.getProperty("fontWeightEnTeteCaracteristiques").isEmpty()) {
 			contenuCSS += "\t font-weight:"+properties.getProperty("fontWeightEnTeteCaracteristiques")+";\n";
 		}
+		
+		
 		contenuCSS += "}\n";
+		
+		//style colorier intervales numeriques
+		if (Boolean.parseBoolean(properties.getProperty("colorierIntervale"))) {
+				String couleur = properties.getProperty("couleurCasseNumerique");
+				contenuCSS +=".colorierNumerique{\n";
+				contenuCSS +="\tbackground-color: "+couleur+";\n";
+				contenuCSS +="}\n";
+		}
+		
+		//style colorier boolean
+		if (Boolean.parseBoolean(properties.getProperty("colorierBoolean"))) {
+			String couleurTrue = properties.getProperty("couleurCasseTrue");
+			String couleurFalse = properties.getProperty("couleurCasseFalse");
+			contenuCSS +=".true{\n";
+			contenuCSS +="\tbackground-color: "+couleurTrue+";\n";
+			contenuCSS +="}\n";
+			
+			contenuCSS +=".false{\n";
+			contenuCSS +="\tbackground-color: "+couleurFalse+";\n";
+			contenuCSS +="}\n";
+	}
 		
 		System.out.println(contenuCSS);
 		return contenuCSS;

@@ -10,6 +10,7 @@ import org.opencompare.api.java.value.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -41,6 +42,21 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 
     private LinkedList<AbstractFeature> nextFeaturesToVisit;
     private int featureDepth;
+    private File fileConf;
+    private Properties properties;
+    FileReader fr;
+    
+    public HTMLExporter(File fileConf) throws IOException {
+		this.fileConf = fileConf;
+		this.properties = new Properties();
+		fr = new FileReader(fileConf);
+		
+		try {
+			properties.load(fr);
+		} finally {
+			fr.close();
+		}
+	}
    
     @Override
     public String export(PCMContainer container) {
@@ -138,6 +154,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
     		}    		
     		th.text(feature.getName());
     		th.attr("class", "en-tete-caracteristiques");
+    		th.attr("id", feature.getName());
     		
     	
     }
@@ -174,6 +191,15 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 //		return cells;}
     @Override
     public void visit(Product product) {
+    	boolean colorierInterval = Boolean.parseBoolean(properties.getProperty("colorierIntervaleNumerique"));
+    	boolean colorierBoolean = Boolean.parseBoolean(properties.getProperty("colorierBoolean"));
+    	
+    	int contenuCell = 0;
+    	String caracteristiqueProperties = properties.getProperty("nomCaracteristique1");
+    	String caracteristiqueProperties2 = properties.getProperty("nomCaracteristique2");
+    	int valMin = Integer.parseInt(properties.getProperty("valeurMin"));
+		int valMax = Integer.parseInt(properties.getProperty("valeurMax"));
+
     	
   			/*code original*/
 			 Element th = tr.appendElement("th");
@@ -194,11 +220,32 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 		        });
 
 		        for (Cell cell : cells) {
+		        	String contentCell = cell.getContent();
+		        	
+		        	if (colorierInterval) {
+		        		contenuCell = Integer.parseInt(cell.getContent());
+					}
+		        	
+		        	String featureCell = cell.getFeature().getName();
+		  
 		            Element td = tr.appendElement("td");
-		            td.appendElement("span").text(cell.getContent());
+		            td.text(cell.getContent());
+		            
+		            if (colorierInterval && featureCell.equals(caracteristiqueProperties) && contenuCell <= valMax && contenuCell >= valMin) {
+		            	td.attr("class","colorierNumerique");
+					}
+		            if (featureCell.equals(caracteristiqueProperties2) && colorierBoolean){
+		            	System.out.println(contentCell);
+		            	if(contentCell.equals("True") || contentCell.equals("Yes") || contentCell.equals("Oui")) {
+		            
+							td.attr("class","true");
+						}else{
+							td.attr("class", "false");
+						}
+		            }
 		        }
 			
-		
+		//TODO verifier casse
       
 
     }

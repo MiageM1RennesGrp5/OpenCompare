@@ -1,8 +1,14 @@
 .en-tete-produits{
-	 color:#FFBF00;
+	 color:red;
 	 font-weight:bold;
 }
 .en-tete-caracteristiques{
 	 color:#B40404;
 	 font-weight:bold;
+}
+.true{
+	background-color: green;
+}
+.false{
+	background-color: red;
 }

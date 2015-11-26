@@ -10,9 +10,12 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.opencompare.api.java.PCM;
+import org.opencompare.api.java.impl.PCMFactoryImpl;
 
 public class GeneralExporter {
-
+	
+	PCMFactoryImpl f = new PCMFactoryImpl();
+	
 	PCM filePcm;
 	File fileConf;
 	HTMLExporter htmlExporter;
@@ -21,10 +24,15 @@ public class GeneralExporter {
 	CSSExporter cssExporter;
 	Properties properties;
 	FileReader fr;
+	
+	
+	
 	public GeneralExporter(PCM filePcm, File fileConf) throws IOException {
 		
 		// TODO Auto-generated constructor stub
 		this.filePcm = filePcm;
+		
+		
 		this.fileConf = fileConf;
 		properties = new Properties();
 		fr = new FileReader(fileConf);
@@ -47,8 +55,12 @@ public class GeneralExporter {
 		this.exporterCss("stylePerso.css");
 	}
 	
-	public void exporterHtml(String nomFichier){
-		this.htmlExporter = new HTMLExporter();
+	public GeneralExporter(PCM filePCM){
+		
+	}
+	
+	public void exporterHtml(String nomFichier) throws IOException{
+		this.htmlExporter = new HTMLExporter(fileConf);
 		htmlExporter.creerFichier(nomFichier, htmlExporter.toHTML(filePcm));
 	}
 	
@@ -58,7 +70,7 @@ public class GeneralExporter {
 	}
 	public void exporterCss(String nomFichier) throws IOException{
 		this.cssExporter = new CSSExporter(fileConf);
-		cssExporter.test();
+		cssExporter.generateCSS();
 		cssExporter.creerFichier(nomFichier);
 	}
 	
@@ -72,4 +84,6 @@ public class GeneralExporter {
 		//htmlExporter2.renverser(htmlExporter2.toHTML(filePcm));
 		htmlExporter2.creerFichier(nomFichier, htmlExporter2.toHTML(filePcm));
 	}
+	
+	
 }

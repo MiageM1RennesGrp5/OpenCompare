@@ -21,8 +21,8 @@ public class Main {
 //	      HTMLExporter htmlExporter = new HTMLExporter();
 //	      htmlExporter.creerFichier("fichierHTML.html", htmlExporter.toHTML(pcm));
 	      
-	      
 	       GeneralExporter exporter = new GeneralExporter(pcm, configFile);
+
 	      
 	        
 	}

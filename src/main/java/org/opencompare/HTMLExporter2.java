@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.opencompare.api.java.*;
+import org.opencompare.api.java.impl.PCMImpl;
 import org.opencompare.api.java.io.PCMExporter;
 import org.opencompare.api.java.util.PCMVisitor;
 import org.opencompare.api.java.value.*;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by gbecan on 13/10/14.
@@ -25,6 +28,7 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
     private Element body;
     private Element head;
     private PCMMetadata metadata;
+ 
     int i = 0;
     int x = 0;
     private Element tr; //Current column
@@ -206,7 +210,7 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
 		        for (Cell cell : cells) {
 		        	
 		            Element td1 = tr.appendElement("td");
-		            td1.appendElement("span").text(cell.getContent());
+		            td1.text(cell.getContent());
 		            td1.attr("class",""+i);
 		            i++;
 		        }
@@ -234,22 +238,62 @@ public class HTMLExporter2 implements PCMVisitor, PCMExporter {
     
     
    public void renverser(Element table){
-String[] nouveauContenu = {};
+	   Element newtable = body.appendElement("table");
+	   Element newtr = newtable.appendElement("tr");
+	  
+	   String[] nouveauContenu = {};
 //	   System.out.println(contenu);
 //	   System.out.println(contenu.contains("<tr"));
 //	   contenu.split("");
 	   String contenu = table.toString();
-	   String[] tableTr = contenu.split("</tr>"); 
-	  for(String tr : tableTr){
-		  String[] tableTd = tr.split("</td>");
-		  for(String td : tableTd){
-			  String[] tableContenuTd = td.split(">");
-			  for(String contenuTd : tableContenuTd){
-				  System.out.println(contenuTd+"***");
-			  }
+		Pattern pattern = Pattern.compile("<.*>(.*)<.*>");
+		Pattern testP = Pattern.compile("<.*>(.*)");
+		Matcher m2 = pattern.matcher(contenu);
+		Matcher m3;
+		 
+		
+		
+	
+	  String[] tableTr = contenu.split("</tr>"); 
+	  
+	  int i = 0;
+	  
+	  for(String trS : tableTr){
+		 
+		  
+		  
+		String[] test3 = trS.split("</td>", 2);
+		m3 = testP.matcher(test3[0]);
+		while(m3.find()) {
+			if (!m3.group(1).equals("")) {
+				  Element td = newtr.appendElement("td");
+				  td.text(m3.group(1));
+				  td.addClass("en-tete-produits");
+			}
+			
 		  }
-	  }
+		
+		for (int j = 0; j < test3.length; j++) {
+
+			m3 = pattern.matcher(test3[j]);
+			while(m3.find()){
+				System.out.println(m3.group(1));
+				
+			}
+		
+			
+			
+		}
+				  
+	}
+		
+		 
+		 
+		  
+	  
+	  
 	 
+	System.out.println(newtable.toString());
 	   
    }
   
