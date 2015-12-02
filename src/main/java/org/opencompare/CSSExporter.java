@@ -57,7 +57,7 @@ public class CSSExporter {
 		contenuCSS += "}\n";
 		
 		//style colorier intervales numeriques
-		if (Boolean.parseBoolean(properties.getProperty("colorierIntervale"))) {
+		if (Boolean.parseBoolean(properties.getProperty("colorierIntervaleNumerique"))) {
 				String couleur = properties.getProperty("couleurCasseNumerique");
 				contenuCSS +=".colorierNumerique{\n";
 				contenuCSS +="\tbackground-color: "+couleur+";\n";
