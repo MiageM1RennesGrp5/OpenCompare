@@ -63,29 +63,15 @@ public class CSSExporter {
 				contenuCSS +="\tbackground-color: "+couleur+";\n";
 				contenuCSS +="}\n";
 		}
-		
-		//style colorier boolean
-		if (Boolean.parseBoolean(properties.getProperty("colorierBoolean"))) {
-			String couleurTrue = properties.getProperty("couleurCasseTrue");
-			String couleurFalse = properties.getProperty("couleurCasseFalse");
-			contenuCSS +=".true{\n";
-			contenuCSS +="\tbackground-color: "+couleurTrue+";\n";
-			contenuCSS +="}\n";
-			
-			contenuCSS +=".false{\n";
-			contenuCSS +="\tbackground-color: "+couleurFalse+";\n";
-			contenuCSS +="}\n";
-	}
-		
-		System.out.println(contenuCSS);
+	
 		return contenuCSS;
 	}
 	/**
      * creation du fichier css
      */
-    public void creerFichier(String nomFichier){
+    public void creerFichier(){
     	 try {
-	    	   BufferedWriter writer = new BufferedWriter(new FileWriter(new File("exports/css/"+nomFichier)));
+	    	   BufferedWriter writer = new BufferedWriter(new FileWriter(new File("exports/css/stylePerso.css")));
 	    	   writer.write(contenuCSS);
 	    	    
 	    	   writer.close();

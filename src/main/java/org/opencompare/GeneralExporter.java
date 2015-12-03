@@ -12,6 +12,7 @@ public class GeneralExporter {
 	private PCM filePcm;
 	private File fileConf;
 	private HTMLExporter htmlExporter;
+	private HTMLExporterRenverse htmlExporterRenverse;
 	private CSSExporter cssExporter;
 	private Properties properties;
 	private FileReader fr;
@@ -35,17 +36,22 @@ public class GeneralExporter {
 	}
 	
 	public void exporterHtml(String nomFichier) throws IOException{
-		boolean renverser = Boolean.parseBoolean(properties.getProperty("renverser"));
-		this.htmlExporter = new HTMLExporter(fileConf,filePcm);
-		htmlExporter.setRenverser(renverser);
-		htmlExporter.creerFichier(nomFichier, htmlExporter.toHTML(filePcm));
+		Boolean renverser = Boolean.parseBoolean(properties.getProperty("renverser"));
+		if (renverser) {
+			this.htmlExporterRenverse = new HTMLExporterRenverse(fileConf, filePcm);
+			htmlExporterRenverse.creerFichier(nomFichier, htmlExporterRenverse.toHTML(filePcm));
+		}else{
+			this.htmlExporter = new HTMLExporter(fileConf,filePcm);
+			htmlExporter.creerFichier(nomFichier, htmlExporter.toHTML(filePcm));
+		}
+		
 	}
 	
 	
-	public void exporterCss(String nomFichier) throws IOException{
+	public void exporterCss() throws IOException{
 		this.cssExporter = new CSSExporter(fileConf);
 		cssExporter.generateCSS();
-		cssExporter.creerFichier(nomFichier);
+		cssExporter.creerFichier();
 	}
 	
 }

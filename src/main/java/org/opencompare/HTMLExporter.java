@@ -20,9 +20,6 @@ import java.util.*;
  */
 public class HTMLExporter implements PCMVisitor, PCMExporter {
 
-	private String matrice[][];
-	private String matriceInverse[][];
-	private Boolean renverser = false;
 	private Document doc;
 	private Element body;
 	private Element section;
@@ -46,10 +43,6 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 	FileReader fr;
 
 	public HTMLExporter(File fileConf, PCM pcm) throws IOException {
-		int x = pcm.getFeatures().size() + 1;
-		int y = pcm.getProducts().size() + 1;
-		this.matrice = new String[y][x];
-		this.matriceInverse = new String[x][y];
 		this.fileConf = fileConf;
 		this.properties = new Properties();
 		fr = new FileReader(fileConf);
@@ -90,13 +83,6 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 		title.attr("id", "title").text(pcm.getName());
 		section = body.appendElement("section");
 		section.addClass("table-responsive");
-
-		if (renverser) {
-			this.createMatice(pcm);
-			this.createMatriceInverse();
-			this.renverser(pcm);
-
-		} else {
 			Element table = section.appendElement("table");
 			table.addClass("table table-bordered");
 			table.attr("id", "matrix_" + pcm.getName().hashCode()).attr("border", "1");
@@ -139,115 +125,10 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 				product.accept(this);
 			}
 
-		}
+		
 	}
 
-	public void createMatice(PCM pcm) {
-
-		// Compute depth
-		featureDepth = pcm.getFeaturesDepth();
-
-		// Generate HTML code for features
-		LinkedList<AbstractFeature> featuresToVisit;
-		featuresToVisit = new LinkedList<>();
-		nextFeaturesToVisit = new LinkedList<>();
-		featuresToVisit.addAll(pcm.getFeatures());
-
-		matrice[0][0] = "Product";
-
-		while (!featuresToVisit.isEmpty()) {
-			Collections.sort(featuresToVisit, new Comparator<AbstractFeature>() {
-				@Override
-				public int compare(AbstractFeature feat1, AbstractFeature feat2) {
-					return metadata.getFeaturePosition(feat1) - metadata.getFeaturePosition(feat2);
-				}
-			});
-			int c1 = 1;
-			for (AbstractFeature feature : featuresToVisit) {
-				matrice[0][c1] = feature.getName();
-				c1++;
-			}
-			featuresToVisit = nextFeaturesToVisit;
-			nextFeaturesToVisit = new LinkedList<>();
-			featureDepth--;
-
-		}
-
-		int l = 1;
-
-		for (Product product : pcm.getProducts()) {
-			int c = 1;
-			matrice[l][0] = product.getName();
-
-			for (Cell cell : this.cellProduct(product)) {
-
-				for (int i = l; i < matrice.length; i++) {
-					for (int j = c; j < matrice[i].length; j++) {
-						matrice[i][j] = cell.getContent();
-					}
-				}
-				c++;
-
-			}
-			l++;
-
-		}
-	}
-
-	public void createMatriceInverse() {
-		for (int x = 0; x < matrice.length; x++) {
-			for (int y = 0; y < matrice[x].length; y++) {
-				matriceInverse[y][x] = matrice[x][y];
-
-			}
-		}
-	}
-
-	/**
-	 * Retunr l'element table renversé
-	 * 
-	 * @return Element table
-	 */
-	public Element renverser(PCM pcm) {
-		boolean colorierInterval = Boolean.parseBoolean(properties.getProperty("colorierIntervaleNumerique"));
-		boolean colorierBoolean = Boolean.parseBoolean(properties.getProperty("colorierBoolean"));
-		
-		if (colorierInterval) {
-			String caracteristiqueInterval = properties.getProperty("nomCaracteristique");
-		}
-		if (colorierBoolean) {
-			String caracteristiqueBoolean = properties.getProperty("nomCaracteristique2");
-		}
-		
-		
-		Element table = section.appendElement("table");
-		table.addClass("table table-bordered");
-		table.attr("id", "matrix_" + pcm.getName().hashCode()).attr("border", "1");
-		Element td;
-		Element th;
-		for (int i = 0; i < matriceInverse.length; i++) {
-			tr = table.appendElement("tr");
-			for (int j = 0; j < matriceInverse[i].length; j++) {
-				if (i == 0 || j == 0) {
-					th = tr.appendElement("th");
-					th.text(matriceInverse[i][j]);
-					if(j == 0){
-						th.addClass("en-tete-caracteristiques");
-					}
-					if(i == 0){
-						th.addClass("en-tete-produits");
-					}
-				}else{
-					td = tr.appendElement("td");
-					td.text(matriceInverse[i][j]);
-				}
-				
-			}
-		}
-		
-		return table;
-	}
-
+	
 	@Override
 	public void visit(Feature feature) {
 
@@ -292,7 +173,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 
 	@Override
 	public void visit(Product product) {
-
+		List<String> listeStr = Arrays.asList("true", "yes", "oui");
 		boolean colorierInterval = Boolean.parseBoolean(properties.getProperty("colorierIntervaleNumerique"));
 		boolean colorierBoolean = Boolean.parseBoolean(properties.getProperty("colorierBoolean"));
 
@@ -325,32 +206,38 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 
 			String contentCell = cell.getContent();
 
-			if (colorierInterval) {
-				try{
-					contenuCell = Integer.parseInt(cell.getContent());
-				}catch (Exception e){
-					System.out.println("La caracteristique choisi ne contient pas de valeur numerique valables");
-				}
-				
-			}
 
 			String featureCell = cell.getFeature().getName();
 
 			Element td = tr.appendElement("td");
 			td.text(cell.getContent());
 
-			if (colorierInterval && featureCell.equals(caracteristiqueProperties) && contenuCell <= valMax
-					&& contenuCell >= valMin) {
-
-				td.attr("class", "colorierNumerique");
+			if (colorierInterval && featureCell.equals(caracteristiqueProperties)) {
+				try{
+					contenuCell = Integer.parseInt(cell.getContent());
+					if (contenuCell <= valMax && contenuCell >= valMin) {
+						td.attr("class", "colorierNumerique");
+					}
+				}catch (Exception e){
+					System.out.println("La caracteristique choisi ne contient pas de valeur numerique valables");
+				}
+				
 			}
 			if (featureCell.equals(caracteristiqueProperties2) && colorierBoolean) {
-				System.out.println(contentCell);
+				
 				if (contentCell.equals("True") || contentCell.equals("Yes") || contentCell.equals("Oui")) {
 
-					td.attr("class", "true");
+					td.attr("class", "success");
 				} else {
-					td.attr("class", "false");
+					td.attr("class", "danger");
+				}
+			}
+			if (colorierBoolean && featureCell.equals(caracteristiqueProperties2)) {
+				
+				if (listeStr.contains(contentCell.toLowerCase())) {
+					td.attr("class", "success");
+				} else {
+					td.attr("class", "danger");
 				}
 			}
 		}
@@ -441,11 +328,4 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 
 	}
 
-	public void setRenverser(Boolean renverser) {
-		this.renverser = renverser;
-	}
-
-	public Boolean getRenverser() {
-		return renverser;
-	}
 }

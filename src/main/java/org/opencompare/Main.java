@@ -17,9 +17,9 @@ public class Main {
 	     File configFile = new File("config/configuration.properties");
 	         
 	     GeneralExporter exporter = new GeneralExporter(pcm, configFile);
-	     exporter.exporterHtml("test56.html");
-	      
-	        
+	     exporter.exporterHtml("test80.html");
+	     exporter.exporterCss();
+	            
 	}
 
 }
