@@ -18,7 +18,6 @@ public class Main {
 	         
 	     GeneralExporter exporter = new GeneralExporter(pcm, configFile);
 	     exporter.exporterHtml("test80.html");
-	     exporter.exporterCss();
 	            
 	}
 

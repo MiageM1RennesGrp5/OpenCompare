@@ -8,9 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-
-
-
 public class CSSExporter {
 
 	
@@ -23,6 +20,7 @@ public class CSSExporter {
 		this.config = config;
 		this.properties = new Properties();
 		this.fr = new FileReader(config); 
+		this.contenuCSS = "";
 	}
 	
 	public String generateCSS() throws IOException{
@@ -33,38 +31,60 @@ public class CSSExporter {
 		}
 		
 		//style en tete de produits
-		contenuCSS = ".en-tete-produits{\n";
+		if (Boolean.parseBoolean(properties.getProperty("changeStyleHeaderProducts"))) {
+			contenuCSS += ".en-tete-produits{\n";
+			
+			if (!properties.getProperty("colorHeaderProducts").isEmpty()) {
+				contenuCSS += "\t color:"+properties.getProperty("colorHeaderProducts")+";\n";
+			}
+			if (!properties.getProperty("fontWeightHeaderProducts").isEmpty()) {
+				contenuCSS += "\t font-weight:"+properties.getProperty("fontWeightHeaderProducts")+";\n";
+			}
+			contenuCSS += "}\n";
+		}
 		
-		if (!properties.getProperty("coleurEnTeteProduits").isEmpty()) {
-			contenuCSS += "\t color:"+properties.getProperty("coleurEnTeteProduits")+";\n";
-		}
-		if (!properties.getProperty("fontWeightEnTeteProduits").isEmpty()) {
-			contenuCSS += "\t font-weight:"+properties.getProperty("fontWeightEnTeteProduits")+";\n";
-		}
-		contenuCSS += "}\n";
 		
 		//style en tete de caracteristiques
-		contenuCSS += ".en-tete-caracteristiques{\n";
-		
-		if (!properties.getProperty("coleurEnTeteCaracteristiques").isEmpty()) {
-			contenuCSS += "\t color:"+properties.getProperty("coleurEnTeteCaracteristiques")+";\n";
+		if (Boolean.parseBoolean(properties.getProperty("changeStyleHeaderFeatures"))) {
+			contenuCSS += ".en-tete-caracteristiques{\n";
+			
+			if (!properties.getProperty("colorHeaderFeatures").isEmpty()) {
+				contenuCSS += "\t color:"+properties.getProperty("colorHeaderFeatures")+";\n";
+			}
+			if (!properties.getProperty("fontWeightHeaderFeatures").isEmpty()) {
+				contenuCSS += "\t font-weight:"+properties.getProperty("fontWeightHeaderFeatures")+";\n";
+			}
+			
+			
+			contenuCSS += "}\n";
 		}
-		if (!properties.getProperty("fontWeightEnTeteCaracteristiques").isEmpty()) {
-			contenuCSS += "\t font-weight:"+properties.getProperty("fontWeightEnTeteCaracteristiques")+";\n";
-		}
 		
-		
-		contenuCSS += "}\n";
 		
 		//style colorier intervales numeriques
-		if (Boolean.parseBoolean(properties.getProperty("colorierIntervaleNumerique"))) {
-				String couleur = properties.getProperty("couleurCasseNumerique");
+		if (Boolean.parseBoolean(properties.getProperty("coloringNumericalRange"))) {
+			if (!properties.getProperty("colorOfRange").isEmpty()) {
+				String couleur = properties.getProperty("colorOfRange");
 				contenuCSS +=".colorierNumerique{\n";
 				contenuCSS +="\tbackground-color: "+couleur+";\n";
 				contenuCSS +="}\n";
+			}	
 		}
-	
+		
+		//style de tout le texte de la table
+		if (Boolean.parseBoolean(properties.getProperty("changeAllTextStyle"))) {
+			contenuCSS +="table{\n";
+			if (!properties.getProperty("textColor").isEmpty()) {
+				String couleur = properties.getProperty("textColor");
+				contenuCSS +="\tcolor: "+couleur+";\n";
+			}
+			if (!properties.getProperty("fontStyle").isEmpty()) {
+				String fontStyle = properties.getProperty("fontStyle");
+				contenuCSS +="\tfont-style: "+fontStyle+";\n";
+			}
+			contenuCSS +="}\n";
+		}
 		return contenuCSS;
+		
 	}
 	/**
      * creation du fichier css

@@ -23,6 +23,7 @@ public class GeneralExporter {
 		this.filePcm = filePcm;		
 		this.fileConf = fileConf;
 		this.readConfigFile(fileConf);
+		this.exporterCss();
 	}
 	
 	public void readConfigFile(File fileConf) throws IOException{
@@ -36,8 +37,9 @@ public class GeneralExporter {
 	}
 	
 	public void exporterHtml(String nomFichier) throws IOException{
-		Boolean renverser = Boolean.parseBoolean(properties.getProperty("renverser"));
-		if (renverser) {
+		Boolean reverse = Boolean.parseBoolean(properties.getProperty("reverse"));
+		
+		if (reverse) {
 			this.htmlExporterRenverse = new HTMLExporterRenverse(fileConf, filePcm);
 			htmlExporterRenverse.creerFichier(nomFichier, htmlExporterRenverse.toHTML(filePcm));
 		}else{

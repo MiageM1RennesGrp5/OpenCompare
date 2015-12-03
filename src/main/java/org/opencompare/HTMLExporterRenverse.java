@@ -2,7 +2,6 @@ package org.opencompare;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -44,7 +43,6 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 
 	private String matrice[][];
 	private String matriceInverse[][];
-	//private Boolean renverser = false;
 	private Document doc;
 	private Element body;
 	private Element section;
@@ -114,6 +112,7 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 		section.addClass("table-responsive");
 		
 		this.createMatice(pcm);
+		
 		this.createMatriceInverse();
 		this.renverser(pcm);
 		
@@ -130,7 +129,7 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 		nextFeaturesToVisit = new LinkedList<>();
 		featuresToVisit.addAll(pcm.getFeatures());
 
-		matrice[0][0] = "Product";
+		matrice[0][0] = "Caracteristiques";
 
 		while (!featuresToVisit.isEmpty()) {
 			Collections.sort(featuresToVisit, new Comparator<AbstractFeature>() {
@@ -187,21 +186,25 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 	 */
 	public Element renverser(PCM pcm) {
 		List<String> listeStr = Arrays.asList("true", "yes", "oui");
-		boolean colorierInterval = Boolean.parseBoolean(properties.getProperty("colorierIntervaleNumerique"));
-		boolean colorierBoolean = Boolean.parseBoolean(properties.getProperty("colorierBoolean"));
+		boolean colorierInterval = Boolean.parseBoolean(properties.getProperty("coloringNumericalRange"));
+		boolean colorierBoolean = Boolean.parseBoolean(properties.getProperty("coloringBooleanValues"));
+		boolean colorierNegatifsPositifs = Boolean.parseBoolean(properties.getProperty("colorigPositiveNegativeValues"));
 		String caracteristiqueInterval = "";
 		String caracteristiqueBoolean = "";
+		String caracteristiquePosNeg = "";
 		int valMin = 0;
 		int valMax = 0;
 		if (colorierInterval) {
-			caracteristiqueInterval = properties.getProperty("nomCaracteristique");
-			valMin = Integer.parseInt(properties.getProperty("valeurMin"));
-			valMax = Integer.parseInt(properties.getProperty("valeurMax"));
+			caracteristiqueInterval = properties.getProperty("numericalFeatureName");
+			valMin = Integer.parseInt(properties.getProperty("minValue"));
+			valMax = Integer.parseInt(properties.getProperty("maxValue"));
 		}
 		if (colorierBoolean) {
-			caracteristiqueBoolean = properties.getProperty("nomCaracteristique2");
+			caracteristiqueBoolean = properties.getProperty("booleanFeatureName");
 		}
-		
+		if (colorierNegatifsPositifs) {
+			caracteristiquePosNeg = properties.getProperty("positiveNegativeFeatureName");
+		}
 		
 		Element table = section.appendElement("table");
 		table.addClass("table table-bordered");
@@ -209,7 +212,7 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 		Element td;
 		Element th;
 		String caracteristiqueCurrent = "";
-		int valeurNumeriqueCurrent = 0;
+		float valeurNumeriqueCurrent = 0;
 		String valeurBoleanCurrent = "";
 		for (int i = 0; i < matriceInverse.length; i++) {
 			tr = table.appendElement("tr");
@@ -249,6 +252,19 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 						} else {
 							td.attr("class", "danger");
 						}
+					}
+					if (colorierNegatifsPositifs && caracteristiquePosNeg.equals(caracteristiqueCurrent)) {
+						try {
+							valeurNumeriqueCurrent = Float.parseFloat(matriceInverse[i][j].replace(",", "."));
+							if (valeurNumeriqueCurrent < 0) {
+								td.attr("class", "danger");
+							}else{
+								td.attr("class", "success");
+							}
+						} catch (Exception e) {
+							System.out.println("La casse ne contient pas une valeur numerique valable");
+						}
+						
 					}
 					
 					
@@ -321,11 +337,6 @@ public class HTMLExporterRenverse implements PCMVisitor, PCMExporter{
 		});
 
 		for (Cell cell : cells) {
-
-			String contentCell = cell.getContent();
-
-
-			String featureCell = cell.getFeature().getName();
 
 			Element td = tr.appendElement("td");
 			td.text(cell.getContent());

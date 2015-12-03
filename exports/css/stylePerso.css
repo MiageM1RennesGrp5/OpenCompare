@@ -1,8 +1,7 @@
-.en-tete-produits{
-	 color:red;
-	 font-weight:bold;
+.colorierNumerique{
+	background-color: pink;
 }
-.en-tete-caracteristiques{
-	 color:#B40404;
-	 font-weight:bold;
+table{
+	color: palevioletred;
+	font-style: italic;
 }

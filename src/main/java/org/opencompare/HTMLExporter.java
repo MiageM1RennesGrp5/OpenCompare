@@ -173,15 +173,29 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 
 	@Override
 	public void visit(Product product) {
+		
 		List<String> listeStr = Arrays.asList("true", "yes", "oui");
-		boolean colorierInterval = Boolean.parseBoolean(properties.getProperty("colorierIntervaleNumerique"));
-		boolean colorierBoolean = Boolean.parseBoolean(properties.getProperty("colorierBoolean"));
-
-		int contenuCell = 0;
-		String caracteristiqueProperties = properties.getProperty("nomCaracteristique");
-		String caracteristiqueProperties2 = properties.getProperty("nomCaracteristique2");
-		int valMin = Integer.parseInt(properties.getProperty("valeurMin"));
-		int valMax = Integer.parseInt(properties.getProperty("valeurMax"));
+		boolean colorierInterval = Boolean.parseBoolean(properties.getProperty("coloringNumericalRange"));
+		boolean colorierBoolean = Boolean.parseBoolean(properties.getProperty("coloringBooleanValues"));
+		boolean colorierNegatifsPositifs = Boolean.parseBoolean(properties.getProperty("colorigPositiveNegativeValues"));
+		String caracteristiqueInterval = "";
+		String caracteristiqueBoolean = "";
+		String caracteristiquePosNeg = "";
+		int valMin = 0;
+		int valMax = 0;
+		if (colorierInterval) {
+			caracteristiqueInterval = properties.getProperty("numericalFeatureName");
+			valMin = Integer.parseInt(properties.getProperty("minValue"));
+			valMax = Integer.parseInt(properties.getProperty("maxValue"));
+		}
+		if (colorierBoolean) {
+			caracteristiqueBoolean = properties.getProperty("booleanFeatureName");
+		}
+		if (colorierNegatifsPositifs) {
+			caracteristiquePosNeg = properties.getProperty("positiveNegativeFeatureName");
+		}
+		float contenuCell = 0;
+		
 
 		Element th = tr.appendElement("th");
 		if (featureDepth > 1) {
@@ -212,7 +226,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 			Element td = tr.appendElement("td");
 			td.text(cell.getContent());
 
-			if (colorierInterval && featureCell.equals(caracteristiqueProperties)) {
+			if (colorierInterval && featureCell.equals(caracteristiqueInterval)) {
 				try{
 					contenuCell = Integer.parseInt(cell.getContent());
 					if (contenuCell <= valMax && contenuCell >= valMin) {
@@ -223,7 +237,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 				}
 				
 			}
-			if (featureCell.equals(caracteristiqueProperties2) && colorierBoolean) {
+			if (featureCell.equals(caracteristiqueBoolean) && colorierBoolean) {
 				
 				if (contentCell.equals("True") || contentCell.equals("Yes") || contentCell.equals("Oui")) {
 
@@ -232,12 +246,17 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 					td.attr("class", "danger");
 				}
 			}
-			if (colorierBoolean && featureCell.equals(caracteristiqueProperties2)) {
+			if (colorierNegatifsPositifs && featureCell.equals(caracteristiquePosNeg)) {
 				
-				if (listeStr.contains(contentCell.toLowerCase())) {
-					td.attr("class", "success");
-				} else {
-					td.attr("class", "danger");
+				try {
+					contenuCell = Float.parseFloat(contentCell.replace(",", "."));
+					if (contenuCell < 0) {
+						td.attr("class", "danger");
+					}else{
+						td.attr("class", "success");
+					}
+				} catch (Exception e) {
+					System.out.println("La casse ne contient pas une valeur numerique valable");
 				}
 			}
 		}
