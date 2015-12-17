@@ -5,12 +5,12 @@ Examples for using OpenCompare API and services
 Click in the next link to see a video demostration of application "Opencompare HTML Exporter Configurable"
 https://www.youtube.com/watch?v=vNjkE8g0A8A
 
-<h1>1) How to add a matrice to the application ?</h1>
+<h1> How to add a matrice to the application ?</h1>
 
 You have to add a .pcm file in the "pcms" folder first. After, in the file named ".\src\main\java\org\opencompare\main.java" you advice the path to your pcm file in the parameter of the line "File pcmFile = new File("pcms/casqueAudio.pcm");", 
 example : "pcms/casqueAudio.pcm"
   
-<h1>2) Configuration file "configuration.properties"</h1>
+<h1> Configuration file "configuration.properties"</h1>
 
 This is the configuration file. If you open it, you will find each parameter that you can change to modify the result you want to obtain when you process the application. Parameters are classify to separate each function of the matrice. In example, you have a "coloring all table text" paragraph where you can change the color or the style of the text of the matrice you will get.
 
@@ -59,14 +59,14 @@ Style of table content
 <li><b>textColor:</b>Color of text.</li>
 <li><b>fontStyle:</b>Font style, for example 'italic'.</li>
 </ul>
-<h1>3) Test case</h1>
+<h1> Test case</h1>
 
 <b>BEFORE:</b> Before testing you need change path HTML file "file:///C:/Users/sandraisabel/Documents/GitHub/OpenCompare/exports/casqueAudio.html", is a local file,
 When you open the FILE HTML in a navigator copy the URL and paste to replace.
 
 In the src/Test/java package you will find a class named MyPCMPrinterTest.java. If you open it you can see all the tests we created to test our application. To explain what we've done, we tested some page elements, in example the title. We add a string value that should be the name of the page, and we use a function to retrive the name of the page. We compare the two values and they should be the same. If it's ok, Junit will say that the test went well, if not, Junit will advertise you in RED that there was a problem in the test execution.
 
-<h1>4) Maven dependencies for tests case</h1>
+<h1> Maven dependencies for tests case</h1>
 
   You have to add Maven dependencies to run your tests.
   Follow this method : right click on the project folder -> Maven -> add dependency
@@ -78,7 +78,7 @@ In the src/Test/java package you will find a class named MyPCMPrinterTest.java. 
 
 Click OK.
 
-<h1>5) Technologies used</h1>
+<h1> Technologies used</h1>
 
 - Eclipse
 - Java
@@ -90,6 +90,6 @@ Click OK.
 - Javascript
 
 
-<h1>6) Licence</h1>
+<h1> Licence</h1>
 
 Open Source
