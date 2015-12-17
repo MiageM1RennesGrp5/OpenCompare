@@ -11,14 +11,18 @@ import org.opencompare.api.java.io.PCMLoader;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		 File pcmFile = new File("pcms/casqueAudio.pcm");
-	     PCMLoader loader = new KMFJSONLoader();
-	     PCM pcm = loader.load(pcmFile).get(0).getPcm();
-	     File configFile = new File("config/configuration.properties");
+		
+		//Indiquer le nom du fichier .pcm
+		File pcmFile = new File("pcms/casqueAudio.pcm");
+	    PCMLoader loader = new KMFJSONLoader();
+	    //Creation d'un PCM a partir du fichier choisi
+	    PCM pcm = loader.load(pcmFile).get(0).getPcm();
+	    //Indiquer le chemin du fichier de configuration
+	    File configFile = new File("config/configuration.properties");
 	         
-	     GeneralExporter exporter = new GeneralExporter(pcm, configFile);
-	     exporter.exporterHtml("test80.html");
-	            
+	    GeneralExporter exporter = new GeneralExporter(pcm, configFile);
+	    String nomFichier = pcmFile.getName();
+	    exporter.exporterHtml(nomFichier.substring(0, nomFichier.length()-4));           
 	}
 
 }

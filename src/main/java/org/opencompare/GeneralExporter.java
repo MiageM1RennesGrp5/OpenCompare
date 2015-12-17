@@ -20,7 +20,7 @@ public class GeneralExporter {
 	
 	
 	public GeneralExporter(PCM filePcm, File fileConf) throws IOException{
-		this.filePcm = filePcm;		
+		this.filePcm = filePcm;	
 		this.fileConf = fileConf;
 		this.readConfigFile(fileConf);
 		this.exporterCss();
@@ -41,10 +41,10 @@ public class GeneralExporter {
 		
 		if (reverse) {
 			this.htmlExporterRenverse = new HTMLExporterRenverse(fileConf, filePcm);
-			htmlExporterRenverse.creerFichier(nomFichier, htmlExporterRenverse.toHTML(filePcm));
+			htmlExporterRenverse.creerFichier(nomFichier+"R.html", htmlExporterRenverse.toHTML(filePcm));
 		}else{
 			this.htmlExporter = new HTMLExporter(fileConf,filePcm);
-			htmlExporter.creerFichier(nomFichier, htmlExporter.toHTML(filePcm));
+			htmlExporter.creerFichier(nomFichier+".html", htmlExporter.toHTML(filePcm));
 		}
 		
 	}

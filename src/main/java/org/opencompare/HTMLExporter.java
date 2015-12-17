@@ -238,8 +238,8 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 				
 			}
 			if (featureCell.equals(caracteristiqueBoolean) && colorierBoolean) {
-				
-				if (contentCell.equals("True") || contentCell.equals("Yes") || contentCell.equals("Oui")) {
+				contentCell.toLowerCase();
+				if (contentCell.equals("true") || contentCell.equals("yes") || contentCell.equals("oui")) {
 
 					td.attr("class", "success");
 				} else {
