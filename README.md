@@ -7,4 +7,4 @@ Examples for using OpenCompare API and services
   
 2) Le fichier de configuration "configuration.properties"
 
-  
+  This is the configuration file. If you open it, you will find each parameter that you can change to modify the result you want   to obtain when you process the application. Parameters are classify to separate each function of the matrice. In example, you    have a "coloring all table text" paragraph where you can change the color or the style of the text of the matrice you will       obtain.
