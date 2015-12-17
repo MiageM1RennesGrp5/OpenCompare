@@ -12,6 +12,9 @@ This is the configuration file. If you open it, you will find each parameter tha
 
 3) Test case
 
+BEFORE: Before testing you need change path HTML file "file:///C:/Users/sandraisabel/Documents/GitHub/OpenCompare/exports/casqueAudio.html", is a local file,
+When you open the FILE HTML in a navigator copy the URL and paste to replace.
+
 In the src/Test/java package you will find a class named MyPCMPrinterTest.java. If you open it you can see all the tests we created to test our application. To explain what we've done, we tested some page elements, in example the title. We add a string value that should be the name of the page, and we use a function to retrive the name of the page. We compare the two values and they should be the same. If it's ok, Junit will say that the test went well, if not, Junit will advertise you in RED that there was a problem in the test execution.
 
 4) Maven dependencies for tests case
