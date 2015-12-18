@@ -1,9 +1,4 @@
 # OpenCompare - HTMLExporter configurable
-Examples for using OpenCompare API and services
-
-<h1>Demo of application</h1>
-Click in the next link to see a video demostration of application "Opencompare HTML Exporter Configurable"
-https://www.youtube.com/watch?v=vNjkE8g0A8A
 
 <h1> How to add a matrice to the application ?</h1>
 
@@ -93,3 +88,53 @@ Click OK.
 <h1> Licence</h1>
 
 Open Source
+
+<h1>Project structure</h1>
+
+<pre>OpenCompare
+  config
+    configuration.properties
+  exports
+    css
+      bootstrap.min
+      bootstrap-theme.min
+      stylePerso.css //CSS exported here
+    js
+      bootstrap.min
+      jquery.min
+    {All HTML files exported}
+  pcms
+    casqueAudio.pcm
+    example.pcm
+    pommes.pcm
+    test.pcm
+  src
+    main
+      java.org.opencompare
+        CSSExporter.java
+        GeneralExporter.java
+        HTMLExporter.java
+        HTMLExporterRenverser.java
+        Main.java
+        MyPCMPrinter.java
+    test
+      java.org.opencompare
+        MyPCMPrinterTest.java //all the tests here
+</pre>
+
+<h1>Demo of application</h1>
+Click in the next link to see a video demostration of application "Opencompare HTML Exporter Configurable"
+https://www.youtube.com/watch?v=vNjkE8g0A8A
+
+<h3>Instructions execution of demo</h3>
+<ol>
+<li>Indicates your PCM file in the class "main.java"</li>
+<li>In the file properties indicate "reverse : false", dont change the others fields. The result of this is the matrix of products not reverse et not personalize.</li>
+<li>Execute the class "main.java".</li>
+<li>Open your HTML page. "OpenCompare\exports".</li>
+<li>Personalize the file "config\configuration.properties" and indicates. The result of this is the matrix of products personalize.</li>
+<li>Execute the class main</li>
+<li>Open your file HTML to see the result.</li>
+<li>Repeat the sames steps but this time indicates 'renverse:true'. The result of this is the matrix of products reverse</li>
+<li>You can see the result of export CSS if you open the file 'stylePerso.css'</li>
+</ol>
