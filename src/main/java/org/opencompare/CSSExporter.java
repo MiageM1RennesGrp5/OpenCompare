@@ -91,15 +91,20 @@ public class CSSExporter {
      */
     public void creerFichier(){
     	 try {
-	    	   BufferedWriter writer = new BufferedWriter(new FileWriter(new File("exports/css/stylePerso.css")));
+    		
+				
+    		 if (!properties.getProperty("nameCSSFile").equals("")) {
+	    	   BufferedWriter writer = new BufferedWriter(new FileWriter(new File("exports/css/"+properties.getProperty("nameCSSFile")+".css")));
 	    	   writer.write(contenuCSS);
 	    	    
 	    	   writer.close();
+    		 }
 	    	   }
 	    	   catch (IOException e)
 	    	   {
 	    	   e.printStackTrace();
 	    	   }
+    	 
     }
 	
 }

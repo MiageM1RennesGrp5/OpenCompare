@@ -27,7 +27,7 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 	private Element tr; // Current column
 	Document.OutputSettings settings = new Document.OutputSettings();
 	private String templateFull = "<html>\n" + "\t<head>\n" + "\t\t<meta charset=\"utf-8\"/>\n"
-			+ "\t\t<title></title>\n" + "\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stylePerso.css\">\n"
+			+ "\t\t<title></title>\n" 
 			+ "\t\t<link href=\"css/bootstrap.min.css\" rel=\"stylesheet\">\n"
 			+ "\t\t<script src=\"js/jquery.min.js\"></script>\n" + "\t\t<script src=\"js/bootstrap.min.js\"></script>\n"
 			+
@@ -62,8 +62,9 @@ public class HTMLExporter implements PCMVisitor, PCMExporter {
 		settings.prettyPrint();
 		this.doc = Jsoup.parse(templateFull);
 		this.body = doc.body();
-
+	
 		doc.head().select("title").first().text(pcm.getName());
+		doc.head().append("\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"css/"+properties.getProperty("nameCSSFile")+".css\">\n");
 		if (metadata == null) {
 			metadata = new PCMMetadata(pcm);
 		}
